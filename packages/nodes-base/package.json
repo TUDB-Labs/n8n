@@ -656,6 +656,7 @@
       "dist/nodes/OpenThesaurus/OpenThesaurus.node.js",
       "dist/nodes/OpenWeatherMap/OpenWeatherMap.node.js",
       "dist/nodes/Orbit/Orbit.node.js",
+      "dist/nodes/FileUpLoad/FileUpLoadTrigger.node.js",
       "dist/nodes/Oura/Oura.node.js",
       "dist/nodes/Paddle/Paddle.node.js",
       "dist/nodes/PagerDuty/PagerDuty.node.js",

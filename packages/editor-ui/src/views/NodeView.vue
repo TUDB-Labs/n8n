@@ -153,6 +153,16 @@
 					@click.stop="onOpenChat"
 				/>
 
+				<n8n-button
+					v-if="containsFileUploadNodes"
+					label="Upload File"
+					size="large"
+					icon="comment"
+					type="primary"
+					data-test-id="workflow-chat-button"
+					@click.stop="onOpenUploadFile"
+				/>
+
 				<n8n-icon-button
 					v-if="workflowRunning === true && !executionWaitingForWebhook"
 					icon="stop"
@@ -246,6 +256,8 @@ import {
 	DRAG_EVENT_DATA_KEY,
 	UPDATE_WEBHOOK_ID_NODE_TYPES,
 	TIME,
+	FILE_UPLOAD_TRIGGER_NODE_TYPE,
+	WORKFLOW_FILE_UPLOAD_MODAL_KEY,
 } from '@/constants';
 
 import useGlobalLinkActions from '@/composables/useGlobalLinkActions';
@@ -724,8 +736,18 @@ export default defineComponent({
 				)
 			);
 		},
+		containsFileUploadNodes():boolean {
+			return (
+				!this.executionWaitingForWebhook &&
+				!!this.nodes.find(
+					(node) =>
+						[FILE_UPLOAD_TRIGGER_NODE_TYPE].includes(node.type) &&
+						node.disabled !== true,
+				)
+			)
+		},
 		isManualChatOnly(): boolean {
-			return this.containsChatNodes && this.triggerNodes.length === 1;
+			return (this.containsChatNodes || this.containsFileUploadNodes) && this.triggerNodes.length === 1;
 		},
 		isExecutionDisabled(): boolean {
 			return !this.containsTrigger || this.allTriggersDisabled;
@@ -1074,6 +1096,14 @@ export default defineComponent({
 			this.$telemetry.track('User clicked chat open button', telemetryPayload);
 			void this.externalHooks.run('nodeView.onOpenChat', telemetryPayload);
 			this.uiStore.openModal(WORKFLOW_LM_CHAT_MODAL_KEY);
+		},
+		async onOpenUploadFile() {
+			const telemetryPayload = {
+				workflow_id: this.workflowsStore.workflowId,
+			};
+			this.$telemetry.track('User clicked chat open button', telemetryPayload);
+			void this.externalHooks.run('nodeView.onOpenChat', telemetryPayload);
+			this.uiStore.openModal(WORKFLOW_FILE_UPLOAD_MODAL_KEY);
 		},
 		async onRunWorkflow() {
 			void this.workflowHelpers.getWorkflowDataToSave().then((workflowData) => {

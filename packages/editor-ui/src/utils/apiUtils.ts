@@ -67,6 +67,7 @@ export async function request(config: {
 	withCredentials?: boolean;
 }) {
 	const { method, baseURL, endpoint, headers, data } = config;
+	console.log('baseURL', baseURL);
 	const options: AxiosRequestConfig = {
 		method,
 		url: endpoint,
@@ -121,6 +122,7 @@ export async function makeRestApiRequest<T>(
 	endpoint: string,
 	data?: IDataObject | IDataObject[],
 ) {
+	console.log('baseUrl', context.baseUrl, endpoint);
 	const response = await request({
 		method,
 		baseURL: context.baseUrl,

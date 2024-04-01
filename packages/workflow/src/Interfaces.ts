@@ -1145,7 +1145,8 @@ export type NodePropertyTypes =
 	| 'resourceMapper'
 	| 'filter'
 	| 'assignmentCollection'
-	| 'credentials';
+	| 'credentials'
+	| 'file';
 
 export type CodeAutocompleteTypes = 'function' | 'functionItem';
 

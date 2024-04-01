@@ -459,6 +459,25 @@
 				:disabled="isReadOnly"
 				@update:model-value="valueChanged"
 			/>
+			<el-upload
+			  v-else-if="parameter.type === 'file'"
+				v-model:file-list="fileList"
+				class="upload-demo"
+				action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+				multiple
+				:on-preview="handlePreview"
+				:on-remove="handleRemove"
+				:before-remove="beforeRemove"
+				:limit="3"
+				:on-exceed="handleExceed"
+			>
+				<el-button type="primary">Click to upload</el-button>
+				<template #tip>
+					<div class="el-upload__tip" style="font-size:12px">
+						jpg/png files with a size less than 500KB.
+					</div>
+				</template>
+			</el-upload>
 		</div>
 
 		<ParameterIssues
@@ -674,6 +693,7 @@ export default defineComponent({
 				],
 			},
 			isFocused: false,
+			fileList: []
 		};
 	},
 	watch: {
@@ -990,6 +1010,8 @@ export default defineComponent({
 	},
 	async updated() {
 		await this.$nextTick();
+
+		console.log('modelValue', this.modelValue, this.parameter)
 		const remoteParameterOptions = this.$el.querySelectorAll('.remote-parameter-option');
 
 		if (remoteParameterOptions.length > 0) {
@@ -1416,6 +1438,11 @@ export default defineComponent({
 			border: none;
 		}
 	}
+	:deep(.el-upload) {
+		.el-upload__input {
+			display: none;
+		}
+	}
 }
 </style>
 
@@ -1539,4 +1566,6 @@ export default defineComponent({
 		height: 100%;
 	}
 }
+
+
 </style>

@@ -105,6 +105,17 @@ export default mergeConfig(
 			...(NODE_ENV === 'development' ? { 'process.env': {} } : {}),
 			BASE_PATH: `'${publicPath}'`,
 		},
+		server: {
+			proxy: {
+				'/file-api': {
+					target: 'https://www.aios123.com',
+					changeOrigin: true,
+					rewrite: path => path.replace(/^\/file-api/, ''),
+					secure: false,
+					ws: true,
+				},
+			},
+		},
 		plugins,
 		resolve: { alias },
 		base: publicPath,
